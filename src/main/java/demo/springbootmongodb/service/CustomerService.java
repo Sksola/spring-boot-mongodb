@@ -1,5 +1,6 @@
 package demo.springbootmongodb.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import demo.springbootmongodb.dto.CustomerDto;
 import demo.springbootmongodb.entity.Customer;
 import demo.springbootmongodb.repository.CustomerRepository;
 
@@ -19,8 +21,17 @@ public class CustomerService {
 	/**
      * 查詢全部
      */
-    public List<Customer> getAllCustomers() {
-        return customerRepo.findAll();
+    public List<CustomerDto> getAllCustomers() {
+    	List<CustomerDto> result = new ArrayList<CustomerDto>();
+    	List<Customer> customerList = customerRepo.findAll();
+    	customerList.forEach(customer->{
+    		CustomerDto customerDto = new CustomerDto();
+    		customerDto.setId(customer.getId());
+    		customerDto.setName(customer.getName());
+    		customerDto.setAge(customer.getAge());
+    		result.add(customerDto);
+    	});
+        return result;
     }
     
     /**
